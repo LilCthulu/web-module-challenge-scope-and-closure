@@ -11,12 +11,12 @@
  * 
  * The following code is demonstrating a way of completing this task
  * It returns the string `foofoo`
-*/
+ */
 
 function processFirstItem(stringList, callback) {
-  return callback(stringList[0])
+    return callback(stringList[0])
 }
-console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
+console.log(processFirstItem(['foo', 'bar'], function(str) { return str + str }));
 
 // ⭐️ Example Challenge END ⭐️
 
@@ -28,19 +28,20 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   Study the code for counter1 and counter2, then answer the questions below.
   
   1. What is the difference between counter1 and counter2?
-  
+counter1 uses nested functions. counter2 doesn't.   
   2. Which of the two uses a closure? How can you tell?
-  
+  counter1. It has nested functions
   3. In what scenario would the counter1 code be preferable? In what scenario would 
      counter2 be better?  
+counter1 would be best for keeping an active count within countermaker. Counter2 would be used for keeping count within any function
 */
 
 // counter1 code
 function counterMaker() {
-  let count = 0;
-  return function counter() {
-   return count++;
-  }
+    let count = 0;
+    return function counter() {
+        return count++;
+    }
 }
 
 const counter1 = counterMaker();
@@ -49,7 +50,7 @@ const counter1 = counterMaker();
 let count = 0;
 
 function counter2() {
-  return count++;
+    return count++;
 }
 
 
@@ -61,10 +62,8 @@ Use the inning function below to do the following:
   For example: invoking inning() should return a numerical score value of 0, 1, or 2
 */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+function inning() {
+    return Math.floor(Math.random() * 3);
 }
 
 /* Task 3: finalScore()
@@ -78,22 +77,41 @@ For example: invoking finalScore(inning, 9) might return this object:
   "Home": 11,
   "Away": 5
 }
-*/ 
+*/
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
+function finalScore(inningCB, inningNum) {
+    const team = []
+    for (let a = 0; a < 2; a++) {
+        let score = 0
+        for (let i = 0; i < inningNum; i++) {
+            score = score + inningCB;
+        }
+        team[a] = score
+    }
+    const final = {
+        'Home': team[0],
+        'Away': team[1]
+    }
+    console.log(final)
+    return final
 }
+finalScore(inning(9))
+console.log(finalScore(inning, 9))
+
 
 /* Task 4: 
 // create a function called getInningScore 
 // the function should take the inning function as an argument 
 // it should return an object with with a score for home and a score for away that that populates from invoking the inning callback. */
 
-function getInningScore(/*Your Code Here */) {
-  /*Your Code Here */
+function getInningScore(inning) {
+    return {
+        'Home': inning(),
+        'Away': inning()
+    }
+
 }
+
 /* Task 5: scoreboard()
 Use the scoreboard function below to do the following:
   1. Receive a callback function, that you create, called `getInningScore`
@@ -138,25 +156,40 @@ Use the scoreboard function below to do the following:
   */
 
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(getInningScoreCB, inningCB, numInnings) {
+    const final = [];
+    let home = 0;
+    let away = 0;
+
+    for (let i = 0; i < numInnings; i++) {
+        const curScore = getInningScoreCB(inningCB);
+        home += curScore.Home;
+        away += curScore.Away;
+        final.push(`Inning ${i+1}: Home ${curScore.Home}: Away ${current.Away}`)
+    }
+    if (home === away) {
+        return `This game will require extra innings: Away ${curScore.Home} - Home ${curScore.Away}`
+
+    } else {
+        return `Final Score: Away ${curScore.Home} - Home ${curScore.Away}`
+    }
 }
 
 
 
 
 /* 🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑 */
-function foo(){
-  console.log('its working');
-  return 'bar';
+function foo() {
+    console.log('its working');
+    return 'bar';
 }
-export default{
-  foo,
-  processFirstItem,
-  counter1,
-  counter2,
-  inning,
-  finalScore,
-  getInningScore,
-  scoreboard,
+export default {
+    foo,
+    processFirstItem,
+    counter1,
+    counter2,
+    inning,
+    finalScore,
+    getInningScore,
+    scoreboard,
 }
